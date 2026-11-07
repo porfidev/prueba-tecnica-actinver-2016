@@ -10,7 +10,7 @@ var gulp = require('gulp'),
     debug = require('gulp-debug');
 
 gulp.task('enviroment', function () {
-    gulp.src('configFile.json')
+    return gulp.src('configFile.json')
         .pipe(ngConfig('actinver_todolist.enviroment', {environment: 'local'}))
         .pipe(rename('app.enviroment.js'))
         .pipe(gulp.dest(config.paths.devfolder + '/js'))
@@ -18,7 +18,7 @@ gulp.task('enviroment', function () {
 });
 
 gulp.task('enviroment:dist', function () {
-    gulp.src('configFile.json')
+    return gulp.src('configFile.json')
         .pipe(ngConfig('actinver_todolist.enviroment', {environment: 'production'}))
         .pipe(rename('app.enviroment.js'))
         .pipe(gulp.dest(config.paths.distfolder + '/js'))

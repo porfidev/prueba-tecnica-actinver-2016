@@ -8,17 +8,17 @@
         .module('actinver_todolist')
         .service('SignUpService', signUpUserService);
 
-    signUpUserService.$inject = ['$http'];
+    signUpUserService.$inject = ['$http', 'env'];
 
     /* @ngInject */
-    function signUpUserService($http) {
+    function signUpUserService($http, env) {
         this.inicio = inicio;
         this.signUp = signUp;
 
         ////////////////
 
         function signUp(user){
-            return $http.post('http://xofotestfront.azurewebsites.net/api/Account/Register', user)
+            return $http.post(env.api.replace(/\/+$/, '') + '/Account/Register', user)
                 .then(signUpSuccess)
                 .catch(signUpFailed);
 

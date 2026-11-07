@@ -5,17 +5,18 @@ var gulp = require('gulp'),
     webserver = require('gulp-webserver'),
     config = require('../config.js');
 
-gulp.task('serve', ['enviroment', 'compile'], function(){
-    gulp.watch(config.paths.styles.source, ['compile-styles']);
-    gulp.watch(config.paths.libs.js, ['compile-libs']);
-    gulp.watch(config.paths.libs.css, ['compile-libs']);
-    gulp.watch(config.paths.modules.js.source, ['compile-modules']);
-    gulp.watch(config.paths.modules.views.html, ['compile-modules']);
-    gulp.watch(config.paths.images.source , ['compile-images']);
-    gulp.watch(config.paths.components.modules.source, ['compile-components']);
-    gulp.watch(config.paths.components.views.source, ['compile-components']);
+gulp.task('serve', gulp.series('build', function(){
+    gulp.watch('configFile.json', gulp.series('enviroment'));
+    gulp.watch(config.paths.styles.source, gulp.series('compile-styles'));
+    gulp.watch(config.paths.libs.js, gulp.series('compile-libs'));
+    gulp.watch(config.paths.libs.css, gulp.series('compile-libs'));
+    gulp.watch(config.paths.modules.js.source, gulp.series('compile-modules'));
+    gulp.watch(config.paths.modules.views.html, gulp.series('compile-modules'));
+    gulp.watch(config.paths.images.source , gulp.series('compile-images'));
+    gulp.watch(config.paths.components.modules.source, gulp.series('compile-components'));
+    gulp.watch(config.paths.components.views.source, gulp.series('compile-components'));
 
-    gulp.src(config.paths.devfolder)
+    return gulp.src(config.paths.devfolder)
         .pipe(webserver({
             //livereload: true,
             //directoryListing: true,
@@ -25,4 +26,4 @@ gulp.task('serve', ['enviroment', 'compile'], function(){
             //host: '0.0.0.0',
             port: 3000
         }));
-});
+}));

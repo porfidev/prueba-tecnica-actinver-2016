@@ -8,10 +8,10 @@
         .module('actinver_todolist')
         .service('SignInService', signInService);
 
-    signInService.$inject = ['$http', 'toFormService', 'postSignIntFix', '$httpParamSerializerJQLike' , '$window'];
+    signInService.$inject = ['$http', 'toFormService', 'postSignIntFix', '$httpParamSerializerJQLike' , '$window', 'env'];
 
     /* @ngInject */
-    function signInService($http, toFormService, postSignIntFix, $httpParamSerializerJQLike, $window) {
+    function signInService($http, toFormService, postSignIntFix, $httpParamSerializerJQLike, $window, env) {
         this.inicio = inicio;
         this.signIn = signIn;
 
@@ -20,7 +20,7 @@
         function signIn(user){
 
             var form = toFormService.convertJsonToFrom(user);
-            return $http.post('http://xofotestfront.azurewebsites.net/Token', $httpParamSerializerJQLike(user), postSignIntFix)
+            return $http.post(env.tokenUrl, $httpParamSerializerJQLike(user), postSignIntFix)
                 .then(signInSuccess)
                 .catch(signInFailed);
 

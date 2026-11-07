@@ -1,13 +1,15 @@
 {
   "local": {
     "env": {
-      "api": "http://localhost:1337/api"
+      "api": "http://localhost:1337/api",
+      "tokenUrl": "http://localhost:1337/Token"
     },
     "debug": true
   },
   "production": {
     "env": {
-      "api": "http://dev.eiya.mx:1337/api"
+      "api": "http://dev.eiya.mx:1337/api",
+      "tokenUrl": "http://dev.eiya.mx:1337/Token"
     },
     "debug": false
   }

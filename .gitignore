@@ -76,3 +76,30 @@ node_modules/
 dist/
 
 npm-debug.log*
+
+# Python: entornos virtuales y archivos compilados
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Python: cachés y reportes de pruebas
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Configuración local y secretos (conservar ejemplos)
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Backend: datos locales de SQLite y archivos auxiliares
+/backend/data/
+/backend/**/*.sqlite3
+/backend/**/*.sqlite3-*
+/backend/**/*.db
+/backend/**/*.db-*

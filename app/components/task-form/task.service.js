@@ -8,10 +8,11 @@
         .module('actinver_todolist')
         .service('TaskService', TaskService);
 
-    TaskService.$inject = ['$http', 'toFormService', 'postSignIntFix', '$httpParamSerializerJQLike' , '$window'];
+    TaskService.$inject = ['$http', 'toFormService', 'postSignIntFix', '$httpParamSerializerJQLike' , '$window', 'env'];
 
     /* @ngInject */
-    function TaskService($http, toFormService, postSignIntFix, $httpParamSerializerJQLike, $window) {
+    function TaskService($http, toFormService, postSignIntFix, $httpParamSerializerJQLike, $window, env) {
+        var apiUrl = env.api.replace(/\/+$/, '');
         var vm = this;
         vm.title = 'TaskController';
 
@@ -30,7 +31,7 @@
         }
 
         function getTasks() {
-            return $http.get('http://xofotestfront.azurewebsites.net/api/ToDoLists')
+            return $http.get(apiUrl + '/ToDoLists')
                 .then(getTasksSuccess)
                 .catch(getTasksFailed);
 
@@ -46,7 +47,7 @@
         }
 
         function getTask(taskId) {
-            return $http.get('http://xofotestfront.azurewebsites.net/api/ToDoLists/ ' + taskId)
+            return $http.get(apiUrl + '/ToDoLists/' + taskId)
                 .then(getTaskSuccess)
                 .catch(getTaskFailed);
 
@@ -62,7 +63,7 @@
         }
 
         function createTask(task){
-            return $http.post('http://xofotestfront.azurewebsites.net/api/ToDoLists', $httpParamSerializerJQLike(task), postSignIntFix)
+            return $http.post(apiUrl + '/ToDoLists', $httpParamSerializerJQLike(task), postSignIntFix)
                 .then(createTaskSuccess)
                 .catch(createTaskFailed);
 
@@ -78,7 +79,7 @@
         }
 
         function updateTask(task, taskId){
-            return $http.put('http://xofotestfront.azurewebsites.net/api/ToDoLists/' + taskId, $httpParamSerializerJQLike(task), postSignIntFix)
+            return $http.put(apiUrl + '/ToDoLists/' + taskId, $httpParamSerializerJQLike(task), postSignIntFix)
                 .then(updateTaskSuccess)
                 .catch(updateTaskFailed);
 
@@ -94,7 +95,7 @@
         }
 
         function deleteTask(task){
-            return $http.delete('http://xofotestfront.azurewebsites.net/api/ToDoLists/' + task.Id, $httpParamSerializerJQLike(task), postSignIntFix)
+            return $http.delete(apiUrl + '/ToDoLists/' + task.Id, postSignIntFix)
                 .then(deleteTaskSuccess)
                 .catch(deleteTaskFailed);
 

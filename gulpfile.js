@@ -1,4 +1,15 @@
-// Modulo para obtener los datos de un directorio
-var requireDir = require('require-dir');
+// Register individual tasks before composing tasks that depend on them.
+var fs = require('fs');
+var path = require('path');
+var tasksDirectory = path.join(__dirname, 'gulp/tasks');
+var composedTasks = ['compile.js', 'default.js', 'serve.js'];
 
-requireDir('./gulp/tasks', {recurse: true});
+fs.readdirSync(tasksDirectory).filter(function (file) {
+    return path.extname(file) === '.js' && composedTasks.indexOf(file) === -1;
+}).sort().forEach(function (file) {
+    require(path.join(tasksDirectory, file));
+});
+
+composedTasks.forEach(function (file) {
+    require(path.join(tasksDirectory, file));
+});

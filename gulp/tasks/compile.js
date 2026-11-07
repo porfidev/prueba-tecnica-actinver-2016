@@ -8,7 +8,7 @@ var gulp = require('gulp'),
     htmlmin = require('gulp-htmlmin');
 
 
-gulp.task('compile', [
+gulp.task('compile', gulp.series(gulp.parallel(
     'compile-styles',
     'compile-libs',
     'compile-modules',
@@ -16,7 +16,7 @@ gulp.task('compile', [
     'compile-files',
     'compile-components',
     'compile-fonts'
-], function(){
+), function(){
     return gulp.src('./index.html')
         .pipe(inject(gulp.src([
             config.paths.devfolder + '/libs/angular.js',
@@ -29,7 +29,9 @@ gulp.task('compile', [
             config.paths.devfolder + '/js/**/*.js'
         ], {read: false}),{ignorePath: config.paths.tempfolder, relative: false, addRootSlash: false} ))
         .pipe(inject(gulp.src([
-            config.paths.devfolder + '/**/*.css'
+            config.paths.devfolder + '/libs/bootstrap.css',
+            config.paths.devfolder + '/libs/**/*.css',
+            config.paths.devfolder + '/css/**/*.css'
         ], {read: false}),{ignorePath: config.paths.tempfolder, relative: false, addRootSlash: false} ))
         .pipe(gulp.dest(config.paths.devfolder));
-});
+}));

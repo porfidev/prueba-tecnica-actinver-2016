@@ -15,9 +15,6 @@ module.exports = {
             dist:  './dist/css'
         },
         bower: './bower_components',
-        bootstrap: {
-            source: './node_modules/bootstrap-sass/assets/stylesheets'
-        },
         libs: {
             js: [
                 './node_modules/angular/angular.js',
@@ -25,6 +22,7 @@ module.exports = {
                 './node_modules/angular-loading-bar/build/loading-bar.js'
             ],
             css: [
+                './node_modules/bootstrap/dist/css/bootstrap.css',
                 './node_modules/angular-loading-bar/build/loading-bar.css'
             ],
             destiny: './.tmp/libs',
@@ -69,7 +67,7 @@ module.exports = {
         },
         fonts: {
             source: [
-                './node_modules/bootstrap-sass/assets/fonts/**/*.*'
+                './node_modules/bootstrap/dist/fonts/**/*.*'
                 ],
             destiny: './.tmp/fonts',
             dist: './dist/fonts'
