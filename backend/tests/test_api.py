@@ -30,7 +30,9 @@ def test_crud_and_user_isolation(api):
     assert response.status_code == 201
     task = response.json()
     assert task['done'] is False
-    route = '/api/ToDoLists/' + str(task['Id'])
+    assert isinstance(task['id'], int)
+    assert 'Id' not in task
+    route = '/api/ToDoLists/' + str(task['id'])
     assert client.get('/api/ToDoLists', headers=first).json() == [task]
     assert client.get(route, headers=first).json() == task
     assert client.get('/api/ToDoLists', headers=second).json() == []

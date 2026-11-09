@@ -35,7 +35,7 @@ class TaskInput(BaseModel):
 
 
 class Task(TaskInput):
-    Id: int
+    id: int
 
 
 class Token(BaseModel):
@@ -127,7 +127,7 @@ def create_app(database_path=None):
         return Token(access_token=token, expires_in=ttl)
 
     def task_row(db, task_id, user_id):
-        row = db.execute('SELECT id AS Id,title,description,due,done FROM tasks WHERE id=? AND user_id=?', (task_id, user_id)).fetchone()
+        row = db.execute('SELECT id,title,description,due,done FROM tasks WHERE id=? AND user_id=?', (task_id, user_id)).fetchone()
         if row is None:
             raise HTTPException(404, 'Tarea no encontrada')
         return dict(row)
@@ -135,7 +135,7 @@ def create_app(database_path=None):
     @app.get('/api/ToDoLists', response_model=list[Task])
     def list_tasks(user: User):
         with connect() as db:
-            return [dict(row) for row in db.execute('SELECT id AS Id,title,description,due,done FROM tasks WHERE user_id=? ORDER BY id', (user,))]
+            return [dict(row) for row in db.execute('SELECT id,title,description,due,done FROM tasks WHERE user_id=? ORDER BY id', (user,))]
 
     @app.get('/api/ToDoLists/{task_id}', response_model=Task)
     def get_task(task_id: int, user: User):

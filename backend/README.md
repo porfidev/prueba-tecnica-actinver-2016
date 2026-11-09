@@ -33,7 +33,7 @@ No se crean usuarios ni contraseñas predeterminados.
 | DELETE | /api/ToDoLists/{id} | Sin cuerpo; devuelve 204 |
 
 Las cinco rutas de tareas requieren `Authorization: Bearer <access_token>`.
-Las respuestas de tareas conservan `Id`, `title`, `description`, `due` y `done`.
+Las respuestas de tareas conservan `id`, `title`, `description`, `due` y `done`.
 `due` se conserva como texto por compatibilidad con el formulario existente.
 PUT reemplaza los campos editables; los campos opcionales omitidos toman su
 valor predeterminado. El listado devuelve un arreglo directo.
