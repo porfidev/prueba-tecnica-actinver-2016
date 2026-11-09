@@ -1,80 +1,104 @@
 # Actinver ToDo List
 
-Frontend AngularJS 1.8 con Bootstrap 3.4.1 y backend FastAPI en `backend/`.
+## Requisitos de desarrollo
 
-## Desarrollo
+- Node.js 24 (desde la versión 24.15.0) y npm.
+- AngularJS 1.8.3, Bootstrap 3.4.1 y Gulp 5, declarados en `package.json`.
+- Python 3.11 o posterior para el backend.
+- FastAPI, Uvicorn y las demás dependencias de `backend/requirements.txt`.
+
+## Instalación
+
+### Frontend
+
+Desde la raíz del proyecto, instala las dependencias con las versiones de `package-lock.json`.
 
 ```sh
-npm install
+npm ci
+```
+
+### Backend
+
+En el primer arranque, `./backend/start.sh` crea el entorno virtual en `backend/.venv` e instala las dependencias de `backend/requirements.txt`.
+
+## Ejecución en desarrollo
+
+Desde la raíz del proyecto, ejecuta cada servicio en una terminal distinta.
+
+### Backend
+
+```sh
+./backend/start.sh
+```
+
+La API queda disponible en [http://localhost:1337](http://localhost:1337).
+
+### Frontend
+
+Con las dependencias de npm disponibles, inicia el servidor de desarrollo.
+
+```sh
 npm start
 ```
 
-El frontend se sirve en http://localhost:3000. Las direcciones de la API se
-configuran en `configFile.json` (`env.api` y `env.tokenUrl`). Las instrucciones
-del servidor están en [backend/README.md](backend/README.md).
+Abre la aplicación en [http://localhost:3000](http://localhost:3000).
 
-## Organización del frontend
+## Configuración local
 
-La estructura agrupa archivos por funcionalidad, siguiendo el criterio de
-[carpetas por funcionalidad de John Papa para AngularJS](https://github.com/johnpapa/angular-styleguide/blob/main/a1/README.md#application-structure).
+El frontend toma las direcciones de `local.env` en [`configFile.json`](configFile.json).
 
-```text
-app/
-  app.module.js       Declaración del módulo AngularJS principal
-  app.config.js       Configuración general
-  app.routes.js       Estados y rutas de UI Router
-  auth/
-    signin/           Pantalla, componente, plantilla y servicio de acceso
-    signup/           Pantalla, componente, plantilla y servicio de registro
-  core/               Constantes HTTP e interceptor de autenticación
-  home/               Pantalla de inicio
-  layout/             Layout compartido de autenticación
-  shared/             Directivas y utilidades compartidas
-  tasks/              Pantallas, formulario y servicio de tareas
-  assets/sass/        Estilos propios
+- `env.api` es la URL base de las peticiones de tareas y registro. El valor local es `http://localhost:1337/api`.
+- `env.tokenUrl` es la URL completa de inicio de sesión. El valor local es `http://localhost:1337/Token`.
+
+Si cambias el puerto del backend, actualiza ambas URLs. El servidor de desarrollo recompila al detectar cambios en el archivo. Recarga la página para aplicar los nuevos valores.
+
+## API y sesión
+
+- Al iniciar sesión, el frontend guarda `access_token` en `localStorage`.
+- La vista `/tasks` requiere un token guardado. Si falta, el guard redirige al inicio. Si hay un token guardado, el guard de las vistas de acceso redirige a `/tasks`.
+- El interceptor agrega `Authorization: Bearer <token>` a las peticiones de tareas. Si la API devuelve `401` para una petición que llevaba el token actual, el interceptor lo elimina y redirige al inicio.
+- Cerrar sesión elimina el token del navegador y vuelve al inicio.
+
+El contrato de endpoints está en la [documentación del backend](backend/README.md#contrato-compatible-con-angular). Con el backend en ejecución, puedes consultar la [documentación interactiva de FastAPI](http://localhost:1337/docs).
+
+## Composición de AngularJS
+
+```mermaid
+flowchart TD
+    App["actinver_todolist"] --> Router["UI-Router · ui-view"]
+    Router --> Auth["Layout auth"]
+    Router --> Tasks["Layout tasks · TaskController"]
+
+    Auth --> Home["/ · HomeController"]
+    Auth --> Signup["/registro · SignUpController"]
+    Auth --> Login["/login"]
+    Login -->|Redirige a| Home
+    Home --> SigninForm["signinForm"]
+    Signup --> SignupForm["signupForm"]
+
+    Tasks --> List["/tasks · TaskListController"]
+    List --> Modal["Modal de creación o edición"]
+    Modal --> TaskForm["taskForm"]
+    Modal --> Focus["modalDialogFocus"]
+
+    SigninForm --> Validation["formValidation"]
+    SignupForm --> Validation
+    TaskForm --> Validation
+
+    SigninForm --> SigninService["SignInService"]
+    SignupForm --> SignupService["SignUpService"]
+    TaskForm --> TaskService["TaskService"]
+    List --> TaskService
+
+    SigninService --> Http["$http"]
+    SignupService --> Http
+    TaskService --> Http
+    Http --> Interceptor["tokenInterceptor"]
+    Interceptor --> Api["API FastAPI"]
 ```
 
-Se conserva el módulo único `actinver_todolist`. Las carpetas organizan el código;
-no crean módulos AngularJS por sí mismas.
+- `formValidation` controla el envío de los tres formularios. `modalDialogFocus` maneja el foco y el cierre con Escape.
+- Los guards de UI-Router consultan el token guardado para decidir si muestran las vistas de acceso o de tareas. El interceptor adjunta el token a las peticiones protegidas y la API valida su vigencia.
 
-## Compilación y plantillas
-
-```sh
-npm run build        # .tmp/: configuración local
-npm run build:dist   # dist/: configuración production y archivos minificados
-npm test            # Pruebas, compilación y navegación con AngularJS
-npm run format:check
-npm run format
-```
-
-Gulp limpia el directorio de salida antes de compilar, copia todos los JavaScript
-de `app/` a `js/` y todos los HTML a `views/`, conservando sus subcarpetas.
-Por ejemplo:
-
-```text
-app/auth/signup/signup-form.html
-→ .tmp/views/auth/signup/signup-form.html
-→ templateUrl: 'views/auth/signup/signup-form.html'
-```
-
-El HTML generado carga primero Angular y las librerías, después `app.module.js`,
-la configuración generada, las declaraciones `*.module.js` y el resto del código.
-Los nuevos archivos se incluyen automáticamente. `npm start` observa altas,
-cambios y bajas de archivos y vuelve a generar el índice.
-
-Los archivos generados en `.tmp/` y `dist/` no se editan ni se versionan.
-
-## Orden de las declaraciones AngularJS
-
-En controladores y servicios, mantener este orden:
-
-1. Registro en el módulo y anotación explícita de dependencias.
-2. Referencia a la instancia (`vm`) y variables internas necesarias.
-3. Propiedades de estado, ordenadas alfabéticamente.
-4. Métodos públicos, ordenados alfabéticamente y asignados a funciones nombradas.
-5. Hooks de ciclo de vida, como `$onInit`.
-6. Inicialización existente, cuando corresponda, y funciones de implementación.
-
-En componentes, declarar `bindings`, `templateUrl` y `controller`; ordenar los
-bindings alfabéticamente. Conservar el orden de las dependencias en las anotaciones
-para que coincida con los parámetros de la función.
+> [!WARNING]
+> Este proyecto contiene dependencias que no deben usarse en producción. Úsalo únicamente para desarrollo y evaluación.

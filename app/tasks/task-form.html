@@ -1,90 +1,88 @@
 <form name="$ctrl.taskForm" form-validation valid-submit="$ctrl.submitTask()" novalidate>
-    <div
-        class="form-group"
-        ng-class="{
+  <div
+    class="form-group"
+    ng-class="{
         'has-error': $ctrl.taskForm.title.$invalid &&
             ($ctrl.taskForm.title.$touched || $ctrl.taskForm.$submitted)
     }"
-    >
-        <label for="task-title">Título</label>
-        <input
-            type="text"
-            id="task-title"
-            name="title"
-            class="form-control"
-            ng-model="$ctrl.task.title"
-            ng-maxlength="200"
-            required
-        />
-        <div class="help-block" ng-if="$ctrl.taskForm.title.$touched || $ctrl.taskForm.$submitted">
-            <span ng-if="$ctrl.taskForm.title.$error.required">El título es obligatorio.</span>
-            <span ng-if="$ctrl.taskForm.title.$error.maxlength"
-                >El título admite hasta 200 caracteres.</span
-            >
-        </div>
+  >
+    <label for="task-title">Título</label>
+    <input
+      type="text"
+      id="task-title"
+      name="title"
+      class="form-control"
+      ng-model="$ctrl.task.title"
+      ng-maxlength="200"
+      required
+    />
+    <div class="help-block" ng-if="$ctrl.taskForm.title.$touched || $ctrl.taskForm.$submitted">
+      <span ng-if="$ctrl.taskForm.title.$error.required">El título es obligatorio.</span>
+      <span ng-if="$ctrl.taskForm.title.$error.maxlength"
+        >El título admite hasta 200 caracteres.</span
+      >
     </div>
+  </div>
 
-    <div
-        class="form-group"
-        ng-class="{
+  <div
+    class="form-group"
+    ng-class="{
         'has-error': $ctrl.taskForm.description.$invalid &&
             ($ctrl.taskForm.description.$touched || $ctrl.taskForm.$submitted)
     }"
-    >
-        <label for="task-description"
-            >Descripción <small class="text-muted">(opcional)</small></label
-        >
-        <textarea
-            id="task-description"
-            name="description"
-            class="form-control"
-            rows="4"
-            ng-model="$ctrl.task.description"
-            ng-maxlength="10000"
-        ></textarea>
-        <div
-            class="help-block"
-            ng-if="$ctrl.taskForm.description.$touched || $ctrl.taskForm.$submitted"
-        >
-            <span ng-if="$ctrl.taskForm.description.$error.maxlength"
-                >La descripción admite hasta 10 000 caracteres.</span
-            >
-        </div>
-    </div>
-
+  >
+    <label for="task-description">Descripción <small class="text-muted">(opcional)</small></label>
+    <textarea
+      id="task-description"
+      name="description"
+      class="form-control"
+      rows="4"
+      ng-model="$ctrl.task.description"
+      ng-maxlength="10000"
+    ></textarea>
     <div
-        class="form-group"
-        ng-class="{
+      class="help-block"
+      ng-if="$ctrl.taskForm.description.$touched || $ctrl.taskForm.$submitted"
+    >
+      <span ng-if="$ctrl.taskForm.description.$error.maxlength"
+        >La descripción admite hasta 10 000 caracteres.</span
+      >
+    </div>
+  </div>
+
+  <div
+    class="form-group"
+    ng-class="{
         'has-error': $ctrl.taskForm.due.$invalid &&
             ($ctrl.taskForm.due.$touched || $ctrl.taskForm.$submitted)
     }"
-    >
-        <label for="task-due">Fecha límite <small class="text-muted">(opcional)</small></label>
-        <input
-            type="text"
-            id="task-due"
-            name="due"
-            class="form-control"
-            ng-model="$ctrl.task.due"
-            ng-maxlength="100"
-            placeholder="AAAA-MM-DD"
-            aria-describedby="task-due-help"
-        />
-        <p id="task-due-help" class="help-block">Indica para cuándo necesitas terminar la tarea.</p>
-        <div class="help-block" ng-if="$ctrl.taskForm.due.$touched || $ctrl.taskForm.$submitted">
-            <span ng-if="$ctrl.taskForm.due.$error.maxlength"
-                >La fecha límite admite hasta 100 caracteres.</span
-            >
-        </div>
+  >
+    <label for="task-due">Fecha límite <small class="text-muted">(opcional)</small></label>
+    <input
+      type="text"
+      id="task-due"
+      name="due"
+      class="form-control"
+      ng-model="$ctrl.task.due"
+      ng-maxlength="100"
+      placeholder="AAAA-MM-DD"
+      aria-describedby="task-due-help"
+    />
+    <p id="task-due-help" class="help-block">Indica para cuándo necesitas terminar la tarea.</p>
+    <div class="help-block" ng-if="$ctrl.taskForm.due.$touched || $ctrl.taskForm.$submitted">
+      <span ng-if="$ctrl.taskForm.due.$error.maxlength"
+        >La fecha límite admite hasta 100 caracteres.</span
+      >
     </div>
+  </div>
 
-    <div class="alert alert-danger" ng-if="$ctrl.error" role="alert">{{ $ctrl.error }}</div>
-    <button
-        type="submit"
-        class="btn btn-block"
-        ng-class="$ctrl.editing ? 'btn-success' : 'btn-primary'"
-        ng-disabled="$ctrl.sending"
-    >
-        {{ $ctrl.sending ? 'Guardando…' : ($ctrl.editing ? 'Guardar cambios' : 'Agregar tarea') }}
-    </button>
+  <div class="alert alert-danger" ng-if="$ctrl.error" role="alert">{{ $ctrl.error }}</div>
+  <button
+    type="submit"
+    class="btn btn-block"
+    ng-class="$ctrl.editing ? 'btn-success' : 'btn-primary'"
+    ng-disabled="$ctrl.sending"
+  >
+    {{ $ctrl.sending ? 'Guardando…' : ($ctrl.editing ? 'Guardar cambios' : 'Agregar tarea') }}
+  </button>
 </form>

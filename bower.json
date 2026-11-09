@@ -2,19 +2,11 @@
   "name": "actinver_todolist",
   "description": "Prueba de Actinver Front End",
   "main": "index.js",
-  "authors": [
-    "elporfirio.com"
-  ],
+  "authors": ["elporfirio.com"],
   "license": "MIT",
   "homepage": "",
   "private": true,
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
+  "ignore": ["**/.*", "node_modules", "bower_components", "test", "tests"],
   "dependencies": {
     "bootstrap": "^3.3.7"
   }

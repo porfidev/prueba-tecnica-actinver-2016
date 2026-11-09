@@ -1,181 +1,171 @@
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h2 class="panel-title">Lista de tareas</h2>
-    </div>
+  <div class="panel-heading">
+    <h2 class="panel-title">Lista de tareas</h2>
+  </div>
 
-    <ul class="list-group">
-        <li class="list-group-item" ng-repeat="task in taskListCtrl.tasks track by task.id">
-            <div class="row">
-                <div class="col-sm-7">
-                    <div class="checkbox">
-                        <label>
-                            <input
-                                type="checkbox"
-                                ng-model="task.done"
-                                ng-change="taskListCtrl.updateTaskStatus(task)"
-                                ng-disabled="taskListCtrl.updatingTasks[task.id]"
-                                aria-label="Marcar como completada: {{ task.title }}"
-                            />
-                            <span>{{ task.title }}</span>
-                        </label>
-                    </div>
-                    <small class="text-muted">{{ task.done ? 'Completada' : 'Pendiente' }}</small>
-                    <span class="text-muted" ng-if="taskListCtrl.updatingTasks[task.id]">
-                        · Guardando…</span
-                    >
-                    <p class="text-danger" role="alert" ng-if="taskListCtrl.taskErrors[task.id]">
-                        {{ taskListCtrl.taskErrors[task.id] }}
-                    </p>
-                </div>
-                <div class="col-sm-5 text-right">
-                    <div
-                        class="btn-group"
-                        role="group"
-                        aria-label="Acciones de Preparar propuesta del proyecto"
-                    >
-                        <button
-                            type="button"
-                            class="btn btn-default"
-                            ng-click="taskListCtrl.editTask(task)"
-                        >
-                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                            Editar
-                        </button>
-                        <button
-                            type="button"
-                            class="btn btn-danger"
-                            ng-click="taskListCtrl.deleteTask(task)"
-                        >
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                            Eliminar
-                        </button>
-                        <button
-                            type="button"
-                            class="btn btn-info"
-                            aria-haspopup="dialog"
-                            ng-click="taskListCtrl.showTask(task)"
-                        >
-                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                            Ver
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </li>
-    </ul>
+  <ul class="list-group">
+    <li class="list-group-item" ng-repeat="task in taskListCtrl.tasks track by task.id">
+      <div class="row">
+        <div class="col-sm-7">
+          <div class="checkbox">
+            <label>
+              <input
+                type="checkbox"
+                ng-model="task.done"
+                ng-change="taskListCtrl.updateTaskStatus(task)"
+                ng-disabled="taskListCtrl.updatingTasks[task.id]"
+                aria-label="Marcar como completada: {{ task.title }}"
+              />
+              <span>{{ task.title }}</span>
+            </label>
+          </div>
+          <small class="text-muted">{{ task.done ? 'Completada' : 'Pendiente' }}</small>
+          <span class="text-muted" ng-if="taskListCtrl.updatingTasks[task.id]"> · Guardando…</span>
+          <p class="text-danger" role="alert" ng-if="taskListCtrl.taskErrors[task.id]">
+            {{ taskListCtrl.taskErrors[task.id] }}
+          </p>
+        </div>
+        <div class="col-sm-5 text-right">
+          <div
+            class="btn-group"
+            role="group"
+            aria-label="Acciones de Preparar propuesta del proyecto"
+          >
+            <button type="button" class="btn btn-default" ng-click="taskListCtrl.editTask(task)">
+              <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+              Editar
+            </button>
+            <button type="button" class="btn btn-danger" ng-click="taskListCtrl.deleteTask(task)">
+              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+              Eliminar
+            </button>
+            <button
+              type="button"
+              class="btn btn-info"
+              aria-haspopup="dialog"
+              ng-click="taskListCtrl.showTask(task)"
+            >
+              <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+              Ver
+            </button>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
 </div>
 
 <div class="well text-center" ng-if="taskListCtrl.tasks.length === 0">
-    <h2 class="h3">Todavía no tienes tareas</h2>
-    <p class="text-muted">Agrega tu primera tarea para comenzar.</p>
-    <button type="button" class="btn btn-primary" ng-click="tasksCtrl.showAddTask()">
-        Agregar tarea
-    </button>
+  <h2 class="h3">Todavía no tienes tareas</h2>
+  <p class="text-muted">Agrega tu primera tarea para comenzar.</p>
+  <button type="button" class="btn btn-primary" ng-click="tasksCtrl.showAddTask()">
+    Agregar tarea
+  </button>
 </div>
 
 <div class="modal-backdrop in" ng-if="tasksCtrl.isAddingTask || taskListCtrl.editingTask"></div>
 <div
-    ng-if="tasksCtrl.isAddingTask || taskListCtrl.editingTask"
-    class="modal"
-    id="task-form-modal"
-    style="display: block"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="task-form-modal-title"
-    modal-dialog-focus
-    on-modal-close="tasksCtrl.cancelAddTask(); taskListCtrl.cancelEditTask()"
-    modal-busy="taskListCtrl.savingTask"
+  ng-if="tasksCtrl.isAddingTask || taskListCtrl.editingTask"
+  class="modal"
+  id="task-form-modal"
+  style="display: block"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="task-form-modal-title"
+  modal-dialog-focus
+  on-modal-close="tasksCtrl.cancelAddTask(); taskListCtrl.cancelEditTask()"
+  modal-busy="taskListCtrl.savingTask"
 >
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button
-                    type="button"
-                    class="close"
-                    aria-label="Cerrar formulario"
-                    ng-disabled="taskListCtrl.savingTask"
-                    ng-click="tasksCtrl.cancelAddTask(); taskListCtrl.cancelEditTask()"
-                >
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h2 class="modal-title h4" id="task-form-modal-title">
-                    {{ taskListCtrl.editingTask ? 'Editar tarea' : 'Agregar tarea' }}
-                </h2>
-            </div>
-            <div class="modal-body">
-                <task-form
-                    ng-if="!taskListCtrl.editingTask"
-                    task="tasksCtrl.newTask"
-                    sending="taskListCtrl.savingTask"
-                    on-success="tasksCtrl.onSuccessAdded(); taskListCtrl.successAddTask()"
-                ></task-form>
-                <task-form
-                    ng-if="taskListCtrl.editingTask"
-                    editing="true"
-                    task="taskListCtrl.task"
-                    sending="taskListCtrl.savingTask"
-                    on-update="taskListCtrl.successEditTask()"
-                ></task-form>
-            </div>
-            <div class="modal-footer">
-                <button
-                    type="button"
-                    class="btn btn-default"
-                    ng-disabled="taskListCtrl.savingTask"
-                    ng-click="tasksCtrl.cancelAddTask(); taskListCtrl.cancelEditTask()"
-                >
-                    Cancelar
-                </button>
-            </div>
-        </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          aria-label="Cerrar formulario"
+          ng-disabled="taskListCtrl.savingTask"
+          ng-click="tasksCtrl.cancelAddTask(); taskListCtrl.cancelEditTask()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h2 class="modal-title h4" id="task-form-modal-title">
+          {{ taskListCtrl.editingTask ? 'Editar tarea' : 'Agregar tarea' }}
+        </h2>
+      </div>
+      <div class="modal-body">
+        <task-form
+          ng-if="!taskListCtrl.editingTask"
+          task="tasksCtrl.newTask"
+          sending="taskListCtrl.savingTask"
+          on-success="tasksCtrl.onSuccessAdded(); taskListCtrl.successAddTask()"
+        ></task-form>
+        <task-form
+          ng-if="taskListCtrl.editingTask"
+          editing="true"
+          task="taskListCtrl.currentTask"
+          sending="taskListCtrl.savingTask"
+          on-update="taskListCtrl.successEditTask()"
+        ></task-form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-default"
+          ng-disabled="taskListCtrl.savingTask"
+          ng-click="tasksCtrl.cancelAddTask(); taskListCtrl.cancelEditTask()"
+        >
+          Cancelar
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
 <div
-    ng-if="taskListCtrl.showDetail"
-    class="modal"
-    id="task-detail-modal"
-    style="display: block"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="task-detail-title"
-    aria-describedby="task-detail-description"
+  ng-if="taskListCtrl.showDetail"
+  class="modal"
+  id="task-detail-modal"
+  style="display: block"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="task-detail-title"
+  aria-describedby="task-detail-description"
 >
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button
-                    type="button"
-                    class="close"
-                    aria-label="Cerrar detalle"
-                    ng-click="taskListCtrl.hideTask()"
-                >
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h2 class="modal-title h4" id="task-detail-title">Detalle de la tarea</h2>
-            </div>
-            <div class="modal-body">
-                <h3 class="h4">{{ taskListCtrl.currentTask.title }}</h3>
-                <p id="task-detail-description">{{ taskListCtrl.currentTask.description }}</p>
-                <dl class="dl-horizontal">
-                    <dt>Fecha límite</dt>
-                    <dd>{{ taskListCtrl.currentTask.due || '--' }}</dd>
-                    <dt>Estado</dt>
-                    <dd>
-                        <span
-                            class="label"
-                            ng-class="taskListCtrl.currentTask.done ? 'label-success' : 'label-warning'"
-                        >
-                            {{ taskListCtrl.currentTask.done ? 'Completada' : 'Pendiente' }}
-                        </span>
-                    </dd>
-                </dl>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" ng-click="taskListCtrl.hideTask()">
-                    Cerrar
-                </button>
-            </div>
-        </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          aria-label="Cerrar detalle"
+          ng-click="taskListCtrl.hideTask()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h2 class="modal-title h4" id="task-detail-title">Detalle de la tarea</h2>
+      </div>
+      <div class="modal-body">
+        <h3 class="h4">{{ taskListCtrl.currentTask.title }}</h3>
+        <p id="task-detail-description">{{ taskListCtrl.currentTask.description }}</p>
+        <dl class="dl-horizontal">
+          <dt>Fecha límite</dt>
+          <dd>{{ taskListCtrl.currentTask.due || '--' }}</dd>
+          <dt>Estado</dt>
+          <dd>
+            <span
+              class="label"
+              ng-class="taskListCtrl.currentTask.done ? 'label-success' : 'label-warning'"
+            >
+              {{ taskListCtrl.currentTask.done ? 'Completada' : 'Pendiente' }}
+            </span>
+          </dd>
+        </dl>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="taskListCtrl.hideTask()">
+          Cerrar
+        </button>
+      </div>
     </div>
+  </div>
 </div>

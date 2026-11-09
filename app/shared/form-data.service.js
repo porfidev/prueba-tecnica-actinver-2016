@@ -2,22 +2,21 @@
  * Created by elporfirio on 12/09/16.
  */
 (function () {
-    'use strict';
+  'use strict';
 
-    angular.module('actinver_todolist').service('toFormService', toFormService);
+  angular.module('actinver_todolist').service('toFormService', toFormService);
 
-    /* @ngInject */
-    function toFormService() {
-        this.convertJsonToFrom = convertJsonToFrom;
+  function toFormService() {
+    this.convertJsonToFrom = convertJsonToFrom;
 
-        function convertJsonToFrom(json) {
-            var form_data = new FormData();
+    function convertJsonToFrom(json) {
+      const form_data = new FormData();
 
-            for (var key in json) {
-                form_data.append(key, json[key]);
-            }
+      for (let key in json) {
+        form_data.append(key, json[key]);
+      }
 
-            return form_data;
-        }
+      return form_data;
     }
+  }
 })();

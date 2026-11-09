@@ -6,18 +6,15 @@
 
   angular
     .module('actinver_todolist')
-    .controller('TaskListController', ['TaskService', '$state', '$window', TaskListController]);
+    .controller('TaskListController', ['TaskService', TaskListController]);
 
-  function TaskListController(TaskService, $state, $window) {
+  function TaskListController(TaskService) {
     const vm = this;
 
     vm.currentTask = {};
     vm.editingTask = false;
-    vm.error = '';
-    vm.ok = false;
     vm.savingTask = false;
     vm.showDetail = false;
-    vm.task = {};
     vm.taskErrors = {};
     vm.tasks = [];
     vm.updatingTasks = {};
@@ -38,12 +35,11 @@
     function cancelEditTask() {
       vm.editingTask = false;
       vm.savingTask = false;
-      vm.task = {};
+      vm.currentTask = {};
     }
 
     function deleteTask(task) {
-      var asegurar = confirm('¿Desea Eliminar?');
-      if (asegurar) {
+      if (confirm('¿Desea Eliminar?')) {
         TaskService.deleteTask(task).then(function (result) {
           vm.obtainTasks();
         });
@@ -52,7 +48,7 @@
 
     function editTask(task) {
       vm.editingTask = true;
-      vm.task = angular.copy(task);
+      vm.currentTask = angular.copy(task);
     }
 
     function hideTask() {
@@ -61,16 +57,19 @@
     }
 
     function obtainTasks() {
-      TaskService.getTasks().then(function (result) {
-        console.info(result);
-        vm.tasks = result.data;
-      });
+      TaskService.getTasks()
+        .then(function (result) {
+          vm.tasks = result.data;
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
     }
 
     function showTask(task) {
       TaskService.getTask(task.id)
         .then(function (result) {
-          if (result.status === 200) {
+          if (result.status === 200 && !vm.editingTask) {
             vm.currentTask = result.data;
             vm.showDetail = true;
           }
@@ -82,8 +81,7 @@
     }
 
     function successAddTask() {
-      vm.editingTask = false;
-      vm.task = {};
+      cancelEditTask();
       vm.obtainTasks();
     }
 
@@ -105,7 +103,9 @@
       return TaskService.updateTask(task, task.id)
         .then(function (response) {
           task.done = response.data.done;
-          if (vm.currentTask.id === task.id) vm.currentTask.done = task.done;
+          if (vm.showDetail && vm.currentTask.id === task.id) {
+            vm.currentTask.done = task.done;
+          }
         })
         .catch(function () {
           task.done = previousState;

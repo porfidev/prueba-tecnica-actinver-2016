@@ -12,7 +12,7 @@
         element.on('$destroy', function () {
           element.off('submit', submit);
         });
-
+        ß;
         function submit(event) {
           event.preventDefault();
 

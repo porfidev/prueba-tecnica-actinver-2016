@@ -4,9 +4,7 @@
 (function () {
   'use strict';
 
-  angular.module('actinver_todolist').service('SignUpService', signUpUserService);
-
-  signUpUserService.$inject = ['$http', 'env'];
+  angular.module('actinver_todolist').service('SignUpService', '$http', 'env', signUpUserService);
 
   function signUpUserService($http, env) {
     this.signUp = signUp;

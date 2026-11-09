@@ -33,8 +33,8 @@
     };
 
     function request(config) {
-      var isApi = config.url.indexOf(apiUrl + '/') === 0;
-      var isPublic = config.url === apiUrl + '/Account/Register' || config.url === env.tokenUrl;
+      const isApi = config.url.indexOf(apiUrl + '/') === 0;
+      const isPublic = config.url === apiUrl + '/Account/Register' || config.url === env.tokenUrl;
 
       if ($window.localStorage.access_token && isApi && !isPublic) {
         config.headers = config.headers || {};
