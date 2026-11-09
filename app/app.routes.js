@@ -40,7 +40,8 @@ function routes($stateProvider, $urlRouterProvider) {
       abstract: true,
       templateUrl: 'views/layout/tasks.layout.html',
       controller: 'TaskController',
-      controllerAs: 'tasksCtrl'
+      controllerAs: 'tasksCtrl',
+      data: { requiresAuth: true }
     },
     {
       name: 'listTasks',

@@ -1,6 +1,6 @@
 (function () {
   angular.module('actinver_todolist').controller('HomeController', ['$state', HomeController]);
-  ß;
+
   function HomeController($state) {
     const vm = this;
 
