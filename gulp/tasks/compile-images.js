@@ -3,7 +3,7 @@
  */
 var gulp = require('gulp'),
     config = require('../config.js'),
-    debug = require('gulp-debug');
+    debug = require('gulp-debug').default;
 
 gulp.task('compile-images', function(){
     return gulp.src(config.paths.images.source)

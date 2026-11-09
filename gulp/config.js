@@ -9,10 +9,10 @@ module.exports = {
         devfolder: './.tmp',
         distfolder: './dist',
         styles: {
-            source: './app/assets/sass/*.scss',
+            source: './app/assets/sass/**/*.scss',
             main: './app/assets/sass/main.scss',
             destiny: './.tmp/css',
-            dist:  './dist/css'
+            dist: './dist/css'
         },
         bower: './bower_components',
         libs: {
@@ -28,23 +28,21 @@ module.exports = {
             destiny: './.tmp/libs',
             dist: './dist/libs'
         },
-        modules: {
-            views: {
-                html: './app/modules/**/*.html',
-                destiny: './.tmp/views',
-                dist: './dist/views'
-            },
-            js: {
-                source: [
-                    './app/*.js',
-                    './app/modules/**/*.js'
-                ],
-                destiny: './.tmp/js',
-                dist: './dist/js'
-            }
+        app: {
+            base: './app',
+            scripts: './app/**/*.js',
+            templates: './app/**/*.html',
+            jsDestiny: './.tmp/js',
+            jsDist: './dist/js',
+            viewsDestiny: './.tmp/views',
+            viewsDist: './dist/views'
         },
         images: {
-            source: ['./assets/source/**/*.png', './assets/source/**/*.jpg', './assets/source/**/*.gif'],
+            source: [
+                './assets/source/**/*.png',
+                './assets/source/**/*.jpg',
+                './assets/source/**/*.gif'
+            ],
             destiny: './.tmp/source',
             dist: './dist/source'
         },
@@ -53,22 +51,8 @@ module.exports = {
             destiny: './.tmp/files',
             dist: './dist/files'
         },
-        components: {
-            views: {
-                source: './app/components/**/*.html',
-                destiny: './.tmp/views',
-                dist: './dist/views'
-            },
-            modules: {
-                source: './app/components/**/*.js',
-                destiny: './.tmp/js',
-                dist: './dist/js'
-            }
-        },
         fonts: {
-            source: [
-                './node_modules/bootstrap/dist/fonts/**/*.*'
-                ],
+            source: ['./node_modules/bootstrap/dist/fonts/**/*.*'],
             destiny: './.tmp/fonts',
             dist: './dist/fonts'
         }

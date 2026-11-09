@@ -5,9 +5,9 @@
 
 var gulp = require('gulp'),
     config = require('../config.js'),
-    debug = require('gulp-debug'),
+    debug = require('gulp-debug').default,
     uglify = require('gulp-uglify'),
-    merge = require('merge-stream'),
+    merge = require('../wait-streams'),
     cleancss = require('gulp-clean-css');
 
 gulp.task('compile-libs', function(){

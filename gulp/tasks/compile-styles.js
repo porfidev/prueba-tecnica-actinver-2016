@@ -4,7 +4,7 @@
 var gulp = require('gulp'),
     config = require('../config.js'),
     sass = require('gulp-sass')(require('sass')),
-    debug = require('gulp-debug'),
+    debug = require('gulp-debug').default,
     cleancss = require('gulp-clean-css');
 
 gulp.task('compile-styles', function(){

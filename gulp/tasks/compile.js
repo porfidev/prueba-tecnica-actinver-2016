@@ -1,37 +1,75 @@
-/**
- * Created by elporfirio on 10/09/16.
- */
 var gulp = require('gulp'),
-    config = require('../config.js'),
-    debug = require('gulp-debug'),
+    config = require('../config'),
     inject = require('gulp-inject'),
     htmlmin = require('gulp-htmlmin');
 
+function index(production) {
+    var folder = production ? config.paths.distfolder : config.paths.devfolder;
+    var options = { ignorePath: folder.replace(/^\.\//, ''), relative: false, addRootSlash: false };
+    var html = gulp
+        .src('./index.html')
+        .pipe(
+            inject(
+                gulp.src([folder + '/libs/angular.js', folder + '/libs/**/*.js'], { read: false }),
+                Object.assign({}, options, { starttag: '<!-- libs:js -->' })
+            )
+        )
+        .pipe(
+            inject(
+                gulp.src(
+                    [
+                        folder + '/js/app.module.js',
+                        folder + '/js/app.enviroment.js',
+                        folder + '/js/**/*.module.js',
+                        folder + '/js/**/*.js'
+                    ],
+                    { read: false }
+                ),
+                options
+            )
+        )
+        .pipe(
+            inject(
+                gulp.src(
+                    [
+                        folder + '/libs/bootstrap.css',
+                        folder + '/libs/**/*.css',
+                        folder + '/css/**/*.css'
+                    ],
+                    { read: false }
+                ),
+                options
+            )
+        );
+    if (production) html = html.pipe(htmlmin({ collapseWhitespace: true }));
+    return html.pipe(gulp.dest(folder));
+}
 
-gulp.task('compile', gulp.series(gulp.parallel(
+var tasks = [
     'compile-styles',
     'compile-libs',
-    'compile-modules',
+    'compile-app',
     'compile-images',
     'compile-files',
-    'compile-components',
     'compile-fonts'
-), function(){
-    return gulp.src('./index.html')
-        .pipe(inject(gulp.src([
-            config.paths.devfolder + '/libs/angular.js',
-            config.paths.devfolder + '/libs/**/*.js'
-        ], {read: false}),{ignorePath: config.paths.tempfolder, relative: false, addRootSlash: false, starttag: '<!-- libs:js -->'} ))
-        .pipe(inject(gulp.src([
-            config.paths.devfolder + '/js/app.js',
-            config.paths.devfolder + '/js/app.enviroment.js',
-            config.paths.devfolder + '/js/app.routes.js',
-            config.paths.devfolder + '/js/**/*.js'
-        ], {read: false}),{ignorePath: config.paths.tempfolder, relative: false, addRootSlash: false} ))
-        .pipe(inject(gulp.src([
-            config.paths.devfolder + '/libs/bootstrap.css',
-            config.paths.devfolder + '/libs/**/*.css',
-            config.paths.devfolder + '/css/**/*.css'
-        ], {read: false}),{ignorePath: config.paths.tempfolder, relative: false, addRootSlash: false} ))
-        .pipe(gulp.dest(config.paths.devfolder));
-}));
+];
+gulp.task(
+    'compile',
+    gulp.series(gulp.parallel.apply(gulp, tasks), function () {
+        return index(false);
+    })
+);
+gulp.task(
+    'compile:dist',
+    gulp.series(
+        gulp.parallel.apply(
+            gulp,
+            tasks.map(function (task) {
+                return task + ':dist';
+            })
+        ),
+        function () {
+            return index(true);
+        }
+    )
+);

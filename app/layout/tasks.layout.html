@@ -1,0 +1,22 @@
+<!-- Maqueta estática Bootstrap 3. Pendiente de conectar a rutas, datos y acciones. -->
+<section class="container" aria-labelledby="tasks-layout-title">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-8">
+                <h1 id="tasks-layout-title">Mis tareas</h1>
+                <p class="text-muted">
+                    Organiza tus pendientes y consulta los detalles de cada tarea.
+                </p>
+            </div>
+            <div class="col-sm-4 text-right">
+                <button type="button" class="btn btn-primary btn-lg" ng-click="tasksCtrl.showAddTask()">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    Agregar tarea
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <ui-view></ui-view>
+
+</section>

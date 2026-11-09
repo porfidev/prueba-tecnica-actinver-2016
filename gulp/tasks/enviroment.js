@@ -7,7 +7,7 @@ var gulp = require('gulp'),
     config = require('../config.js'),
     ngConfig = require('gulp-ng-config'),
     rename = require('gulp-rename'),
-    debug = require('gulp-debug');
+    debug = require('gulp-debug').default;
 
 gulp.task('enviroment', function () {
     return gulp.src('configFile.json')

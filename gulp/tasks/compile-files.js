@@ -4,7 +4,7 @@
 var gulp = require('gulp'),
     config = require('../config.js'),
     rename = require('gulp-rename'),
-    debug = require('gulp-debug');
+    debug = require('gulp-debug').default;
 
 gulp.task('compile-files', function(){
     return gulp.src(config.paths.files.file)

@@ -2,43 +2,54 @@
  * Created by elporfirio on 10/09/16.
  */
 
-angular
-    .module('actinver_todolist').config(['$stateProvider', '$urlRouterProvider', routes]);
+angular.module('actinver_todolist').config(['$stateProvider', '$urlRouterProvider', routes]);
 
-//routes.$inject = ['$stateProvider'];
+function routes($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/');
 
-/* @ngInject */
-function routes ($stateProvider, $urlRouterProvider) {
-
-    $urlRouterProvider.otherwise("/");
-
-    // Arreglo de States
-    var states = [
+    const states = [
+        {
+            name: 'auth',
+            abstract: true,
+            templateUrl: 'views/layout/auth.layout.html'
+        },
         {
             name: 'home',
             url: '/',
-            templateUrl: 'views/home.view.html'
+            parent: 'auth',
+            templateUrl: 'views/home/home.view.html',
+            controller: 'HomeController',
+            controllerAs: 'HomeCtrl'
         },
         {
             name: 'signup',
             url: '/registro',
-            templateUrl: 'views/signup.view.html',
+            parent: 'auth',
+            templateUrl: 'views/auth/signup/signup.view.html',
             controller: 'SignUpController',
-            controllerAs: 'signupctrl'
+            controllerAs: 'SignUpCtrl'
         },
         {
             name: 'signin',
             url: '/login',
-            templateUrl: 'views/signin.view.html',
+            templateUrl: 'views/auth/signin/signin.view.html',
             controller: 'SignInController',
             controllerAs: 'signinctrl'
         },
         {
             name: 'tasks',
-            url: '/tareas',
-            templateUrl: 'views/task-dashboard.view.html',
+            abstract: true,
+            templateUrl: 'views/layout/tasks.layout.html',
             controller: 'TaskController',
-            controllerAs: 'taskctrl'
+            controllerAs: 'tasksCtrl'
+        },
+        {
+            name: 'listTasks',
+            url: '/tasks',
+            parent: 'tasks',
+            templateUrl: 'views/tasks/task-list.view.html',
+            controller: 'TaskListController',
+            controllerAs: 'taskListCtrl'
         },
         {
             name: 'detail',
@@ -46,54 +57,13 @@ function routes ($stateProvider, $urlRouterProvider) {
             params: {
                 taskid: null
             },
-            templateUrl: 'views/task-detail.view.html',
+            templateUrl: 'views/tasks/task-detail.view.html',
             controller: 'DetailController',
             controllerAs: 'detailctrl'
         }
-        // {
-        //     name: 'hello',
-        //     url: '/hello',
-        //     // Using component: instead of template:
-        //     component: 'hello'
-        // },
-        //
-        // {
-        //     name: 'about',
-        //     url: '/about',
-        //     component: 'about'
-        // },
-        //
-        // {
-        //     name: 'people',
-        //     url: '/people',
-        //     component: 'people',
-        //     // This state defines a 'people' resolve
-        //     // It delegates to the PeopleService to HTTP fetch (async)
-        //     // The people component receives this via its `bindings: `
-        //     resolve: {
-        //         people: function(PeopleService) {
-        //             return PeopleService.getAllPeople();
-        //         }
-        //     }
-        // },
-        //
-        // {
-        //     name: 'person',
-        //     // This state takes a URL parameter called personId
-        //     url: '/people/{personId}',
-        //     component: 'person',
-        //     // This state defines a 'person' resolve
-        //     // It delegates to the PeopleService, passing the personId parameter
-        //     resolve: {
-        //         person: function(PeopleService, $transition$) {
-        //             return PeopleService.getPerson($transition$.params().personId);
-        //         }
-        //     }
-        // }
     ];
 
-    // Registrar States
-    states.forEach(function(state) {
+    states.forEach(function (state) {
         $stateProvider.state(state);
     });
 }
