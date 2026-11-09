@@ -27,5 +27,18 @@ angular
           }
         }
       );
+
+      $transitions.onBefore(
+        {
+          to: function (state) {
+            return state.name === 'signin' || state.name === 'home' || state.name === 'signup';
+          }
+        },
+        function () {
+          if ($window.localStorage.getItem('access_token')) {
+            return $state.target('listTasks');
+          }
+        }
+      );
     }
   ]);

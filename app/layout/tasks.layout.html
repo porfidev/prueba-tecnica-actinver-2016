@@ -1,37 +1,37 @@
-<!-- Maqueta estática Bootstrap 3. Pendiente de conectar a rutas, datos y acciones. -->
 <section class="container" aria-labelledby="tasks-layout-title">
-    <div class="page-header">
-        <div class="row">
-            <div class="col-sm-8">
-                <h1 id="tasks-layout-title">Mis tareas</h1>
-                <p class="text-muted">
-                    Organiza tus pendientes y consulta los detalles de cada tarea.
-                </p>
-            </div>
-            <div class="col-sm-4 text-right">
-                <button type="button" class="btn btn-primary btn-lg" ng-click="tasksCtrl.showAddTask()">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    Agregar tarea
-                </button>
-            </div>
-        </div>
+  <div class="page-header">
+    <div class="row">
+      <div class="col-sm-8">
+        <h1 id="tasks-layout-title">Mis tareas</h1>
+        <p class="text-muted">Organiza tus pendientes y consulta los detalles de cada tarea.</p>
+      </div>
+      <div class="col-sm-4 text-right">
+        <button type="button" class="btn btn-default btn-sm" ng-click="tasksCtrl.signOut()">
+          <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+          Cerrar sesión
+        </button>
+        <div class="spacer"></div>
+        <button type="button" class="btn btn-primary btn-lg" ng-click="tasksCtrl.showAddTask()">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+          Agregar tarea
+        </button>
+      </div>
     </div>
+  </div>
 
-    <ui-view></ui-view>
+  <ui-view></ui-view>
 </section>
 
 <footer class="site-footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                <p>&copy; 2026 Mi aplicación</p>
-            </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <p>&copy; 2016 @porfi.dev</p>
+      </div>
 
-            <div class="col-sm-6 text-right">
-                <a href="#/home">Inicio</a>
-                <span aria-hidden="true"> · </span>
-                <a href="mailto:contacto@ejemplo.com">Contacto</a>
-            </div>
-        </div>
+      <div class="col-sm-6 text-right">
+        <a href="mailto:hola@porfi.dev">Contacto</a>
+      </div>
     </div>
+  </div>
 </footer>
