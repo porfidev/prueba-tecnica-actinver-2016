@@ -3,56 +3,56 @@
  */
 
 (function () {
-    'use strict';
+  'use strict';
 
-    angular.module('actinver_todolist').component('signupForm', {
-        bindings: {
-            onSuccess: '&',
-            user: '='
-        },
-        templateUrl: 'views/auth/signup/signup-form.html',
-        controller: ['SignUpService', SignUpFormController]
-    });
+  angular.module('actinver_todolist').component('signupForm', {
+    bindings: {
+      onSuccess: '&',
+      user: '='
+    },
+    templateUrl: 'views/auth/signup/signup-form.html',
+    controller: ['SignUpService', SignUpFormController]
+  });
 
-    function SignUpFormController(SignUpService) {
-        const vm = this;
+  function SignUpFormController(SignUpService) {
+    const vm = this;
 
-        vm.error = '';
-        vm.sending = false;
-        vm.user = {
-            email: '',
-            password: '',
-            confirmpassword: ''
-        };
+    vm.error = '';
+    vm.sending = false;
+    vm.user = {
+      email: '',
+      password: '',
+      confirmpassword: ''
+    };
 
-        vm.signUp = signUp;
+    vm.signUp = signUp;
 
-        function signUp() {
-            if (vm.sending) return;
+    function signUp() {
+      if (vm.sending) return;
 
-            vm.error = '';
-            const form = vm.signupForm;
-            if (!form || form.$valid !== true || form.$pending) return;
-            if (vm.user.password !== vm.user.confirmpassword) return;
+      vm.error = '';
+      const form = vm.signupForm;
+      if (!form || form.$valid !== true || form.$pending) return;
+      if (vm.user.password !== vm.user.confirmpassword) return;
 
-            vm.sending = true;
+      vm.sending = true;
 
-            return SignUpService.signUp(vm.user)
-                .then(function () {
-                    vm.onSuccess();
-                })
-                .catch(function (error) {
-                    if (error.status === 409) {
-                        vm.error = 'Ese correo ya está registrado.';
-                    } else if (error.status === 422) {
-                        vm.error = 'Revisa los datos del formulario.';
-                    } else {
-                        vm.error = 'No se pudo completar el registro. Intenta nuevamente.';
-                    }
-                })
-                .finally(function () {
-                    vm.sending = false;
-                });
-        }
+      return SignUpService.signUp(vm.user)
+        .then(function () {
+          vm.onSuccess();
+        })
+        .catch(function (error) {
+          if (error.status === 409) {
+            vm.error = 'Ese correo ya está registrado.';
+          } else if (error.status === 422) {
+            vm.error = 'Revisa los datos del formulario.';
+          } else {
+            vm.error = 'No se pudo completar el registro. Intenta nuevamente.';
+          }
+        })
+        .finally(function () {
+          vm.sending = false;
+        });
     }
+  }
 })();

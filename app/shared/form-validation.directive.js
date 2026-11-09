@@ -1,123 +1,34 @@
-/**
- * Created by elporfirio on 11/09/16.
- */
 (function () {
-    'use strict';
+  'use strict';
 
-    angular.module('actinver_todolist').directive('formValidation', formValidation);
+  angular.module('actinver_todolist').directive('formValidation', formValidation);
 
-    //formValidation.$inject = [''];
+  function formValidation() {
+    return {
+      restrict: 'A',
+      require: 'form',
+      link: function (scope, element, attrs, form) {
+        element.on('submit', submit);
+        element.on('$destroy', function () {
+          element.off('submit', submit);
+        });
 
-    /* @ngInject */
-    function formValidation() {
-        var directive = {
-            bindToController: true,
-            controller: formValidationController,
-            controllerAs: 'vm',
-            link: link,
-            restrict: 'A',
-            scope: {
-                callback: '&validSubmit',
-                number: '='
-            }
-        };
-        return directive;
+        function submit(event) {
+          event.preventDefault();
 
-        function link(scope, element, attrs, controller) {
-            console.warn(element);
+          // The form's submit listener commits pending view values and sets $submitted first.
+          if (form.$invalid) {
+            const firstInvalid = element[0].querySelector(
+              '[ng-model].ng-invalid:not(:disabled):not([type="hidden"])'
+            );
+            if (firstInvalid) firstInvalid.focus();
+          }
 
-            var $element = angular.element(element);
-            console.info(attrs);
-
-            $element.bind('submit', function (e) {
-                e.preventDefault();
-
-                controller.callIt();
-
-                // // Remove the class pristine from all form elements.
-                // $element.find( '.ng-pristine' ).removeClass( 'ng-pristine' );
-                //
-                // // Get the form object.
-                // var form = scope[ attributes.name ];
-                //
-                // // Set all the fields to dirty and apply the changes on the scope so that
-                // // validation errors are shown on submit only.
-                // angular.forEach( form , function( formElement , fieldName ) {
-                //     // If the fieldname starts with a '$' sign, it means it's an Angular
-                //     // property or function. Skip those items.
-                //     if ( fieldName[0] === '$' ) return;
-                //
-                //     formElement.$pristine = false;
-                //     formElement.$dirty = true;
-                // });
-                //
-                // // Do not continue if the form is invalid.
-                // if ( form.$invalid ) {
-                //     // Focus on the first field that is invalid.
-                //     $element.find( '.ng-invalid' ).first().focus();
-                //
-                //     return false;
-                // }
-
-                // From this point and below, we can assume that the form is valid.
-                //scope.$eval( attributes.customSubmit );
-
-                //scope.$apply();
-
-                ////// OTRO
-                /*
-                 // Add novalidate to the form element.
-                 attributes.$set( 'novalidate' , 'novalidate' );
-
-                 $element.bind( 'submit' , function( e ) {
-                 e.preventDefault();
-
-                 // Remove the class pristine from all form elements.
-                 $element.find( '.ng-pristine' ).removeClass( 'ng-pristine' );
-
-                 // Get the form object.
-                 var form = scope[ attributes.name ];
-
-                 // Set all the fields to dirty and apply the changes on the scope so that
-                 // validation errors are shown on submit only.
-                 angular.forEach( form , function( formElement , fieldName ) {
-                 // If the fieldname starts with a '$' sign, it means it's an Angular
-                 // property or function. Skip those items.
-                 if ( fieldName[0] === '$' ) return;
-
-                 formElement.$pristine = false;
-                 formElement.$dirty = true;
-                 });
-
-                 // Do not continue if the form is invalid.
-                 if ( form.$invalid ) {
-                 // Focus on the first field that is invalid.
-                 $element.find( '.ng-invalid' ).first().focus();
-
-                 return false;
-                 }
-
-                 // From this point and below, we can assume that the form is valid.
-                 scope.$eval( attributes.customSubmit );
-
-                 scope.$apply();
-                 });
-                 */
-            });
+          if (form.$valid === true && !form.$pending) {
+            scope.$apply(attrs.validSubmit);
+          }
         }
-    }
-
-    //ControllerName.$inject = ['dependency'];
-
-    /* @ngInject */
-    function formValidationController() {
-        this.callIt = callIt;
-
-        function callIt() {
-            this.callback();
-            console.log(this.callback);
-
-            console.info(this.number);
-        }
-    }
+      }
+    };
+  }
 })();

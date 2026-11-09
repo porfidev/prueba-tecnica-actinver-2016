@@ -1,97 +1,92 @@
-<form name="$ctrl.signupForm" ng-submit="$ctrl.signUp()" novalidate>
-    <div
-        class="form-group"
-        ng-class="{
+<form name="$ctrl.signupForm" form-validation valid-submit="$ctrl.signUp()" novalidate>
+  <div
+    class="form-group"
+    ng-class="{
             'has-error': $ctrl.signupForm.email.$invalid &&
                 ($ctrl.signupForm.email.$touched || $ctrl.signupForm.$submitted)
         }"
-    >
-        <label for="signup-email">Correo electrónico</label>
-        <input
-            type="email"
-            id="signup-email"
-            name="email"
-            class="form-control"
-            ng-model="$ctrl.user.email"
-            autocomplete="email"
-            required
-        />
-        <div
-            class="help-block"
-            ng-if="$ctrl.signupForm.email.$touched || $ctrl.signupForm.$submitted"
-        >
-            <span ng-if="$ctrl.signupForm.email.$error.required">El correo es obligatorio.</span>
-            <span ng-if="$ctrl.signupForm.email.$error.email">Introduce un correo válido.</span>
-        </div>
+  >
+    <label for="signup-email">Correo electrónico</label>
+    <input
+      type="email"
+      id="signup-email"
+      name="email"
+      class="form-control"
+      ng-model="$ctrl.user.email"
+      autocomplete="email"
+      required
+    />
+    <div class="help-block" ng-if="$ctrl.signupForm.email.$touched || $ctrl.signupForm.$submitted">
+      <span ng-if="$ctrl.signupForm.email.$error.required">El correo es obligatorio.</span>
+      <span ng-if="$ctrl.signupForm.email.$error.email">Introduce un correo válido.</span>
     </div>
+  </div>
 
-    <div
-        class="form-group"
-        ng-class="{
+  <div
+    class="form-group"
+    ng-class="{
             'has-error': $ctrl.signupForm.password.$invalid &&
                 ($ctrl.signupForm.password.$touched || $ctrl.signupForm.$submitted)
         }"
-    >
-        <label for="signup-password">Contraseña</label>
-        <input
-            type="password"
-            id="signup-password"
-            name="password"
-            class="form-control"
-            ng-model="$ctrl.user.password"
-            autocomplete="new-password"
-            ng-trim="false"
-            ng-minlength="8"
-            ng-maxlength="128"
-            required
-        />
-        <p
-            class="help-block"
-            ng-if="$ctrl.signupForm.password.$invalid &&
+  >
+    <label for="signup-password">Contraseña</label>
+    <input
+      type="password"
+      id="signup-password"
+      name="password"
+      class="form-control"
+      ng-model="$ctrl.user.password"
+      autocomplete="new-password"
+      ng-trim="false"
+      ng-minlength="8"
+      ng-maxlength="128"
+      required
+    />
+    <p
+      class="help-block"
+      ng-if="$ctrl.signupForm.password.$invalid &&
                 ($ctrl.signupForm.password.$touched || $ctrl.signupForm.$submitted)"
-        >
-            La contraseña debe tener entre 8 y 128 caracteres.
-        </p>
-    </div>
+    >
+      La contraseña debe tener entre 8 y 128 caracteres.
+    </p>
+  </div>
 
-    <div
-        class="form-group"
-        ng-class="{
+  <div
+    class="form-group"
+    ng-class="{
             'has-error': ($ctrl.signupForm.confirmpassword.$touched || $ctrl.signupForm.$submitted) &&
                 ($ctrl.signupForm.confirmpassword.$invalid ||
                     $ctrl.user.password !== $ctrl.user.confirmpassword)
         }"
+  >
+    <label for="signup-confirm">Confirmar contraseña</label>
+    <input
+      type="password"
+      id="signup-confirm"
+      name="confirmpassword"
+      class="form-control"
+      ng-model="$ctrl.user.confirmpassword"
+      autocomplete="new-password"
+      ng-trim="false"
+      required
+    />
+    <div
+      class="help-block"
+      ng-if="$ctrl.signupForm.confirmpassword.$touched || $ctrl.signupForm.$submitted"
     >
-        <label for="signup-confirm">Confirmar contraseña</label>
-        <input
-            type="password"
-            id="signup-confirm"
-            name="confirmpassword"
-            class="form-control"
-            ng-model="$ctrl.user.confirmpassword"
-            autocomplete="new-password"
-            ng-trim="false"
-            required
-        />
-        <div
-            class="help-block"
-            ng-if="$ctrl.signupForm.confirmpassword.$touched || $ctrl.signupForm.$submitted"
-        >
-            <span ng-if="$ctrl.signupForm.confirmpassword.$error.required"
-                >Confirma tu contraseña.</span
-            >
-            <span
-                ng-if="!$ctrl.signupForm.confirmpassword.$error.required &&
+      <span ng-if="$ctrl.signupForm.confirmpassword.$error.required">Confirma tu contraseña.</span>
+      <span
+        ng-if="!$ctrl.signupForm.confirmpassword.$error.required &&
                     $ctrl.user.password !== $ctrl.user.confirmpassword"
-            >
-                Las contraseñas no coinciden.
-            </span>
-        </div>
+      >
+        Las contraseñas no coinciden.
+      </span>
     </div>
+  </div>
 
-    <div class="alert alert-danger" ng-if="$ctrl.error" role="alert">{{ $ctrl.error }}</div>
+  <div class="alert alert-danger" ng-if="$ctrl.error" role="alert">{{ $ctrl.error }}</div>
 
-    <button type="submit" class="btn btn-primary btn-block" ng-disabled="$ctrl.sending">
-        {{ $ctrl.sending ? 'Registrando…' : 'Crear cuenta' }}
-    </button>
+  <button type="submit" class="btn btn-primary btn-block" ng-disabled="$ctrl.sending">
+    {{ $ctrl.sending ? 'Registrando…' : 'Crear cuenta' }}
+  </button>
 </form>

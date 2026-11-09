@@ -67,6 +67,7 @@ test('Compiled AngularJS form blocks invalid submissions and sends only user fie
                 }
             ]);
         window.eval(read('.tmp/js/auth/signup/signup.service.js'));
+        window.eval(read('.tmp/js/shared/form-validation.directive.js'));
         window.eval(read('.tmp/js/auth/signup/signup-form.component.js'));
         const injector = angular.bootstrap(window.document.body, ['actinver_todolist']);
         const scope = injector.get('$rootScope');
@@ -85,6 +86,7 @@ test('Compiled AngularJS form blocks invalid submissions and sends only user fie
         submit();
         assert.equal(requests.length, 0, 'Empty form must not POST');
         assert(form.textContent.includes('El correo es obligatorio.'));
+        assert.equal(window.document.activeElement, form.querySelector('.ng-invalid'));
         fill('email', 'invalid');
         fill('password', 'short');
         fill('confirmpassword', 'short');
@@ -163,6 +165,7 @@ test('Compiled sign-in form blocks empty input, handles errors and sends only cr
                 }
             ]);
         window.eval(read('.tmp/js/auth/signin/signin.service.js'));
+        window.eval(read('.tmp/js/shared/form-validation.directive.js'));
         window.eval(read('.tmp/js/auth/signin/signin-form.component.js'));
         const injector = angular.bootstrap(window.document.body, ['actinver_todolist']);
         const scope = injector.get('$rootScope');
@@ -283,6 +286,7 @@ test('Successful sign-in from the compiled home view navigates to tasks', () => 
                 }
             ]);
         window.eval(read('.tmp/js/home/home.controller.js'));
+        window.eval(read('.tmp/js/shared/form-validation.directive.js'));
         window.eval(read('.tmp/js/auth/signin/signin-form.component.js'));
         const injector = angular.bootstrap(window.document.body, ['actinver_todolist']);
         const scope = injector.get('$rootScope');
@@ -470,6 +474,7 @@ test('Compiled task form validates create and edit, handles failures and blocks 
                 }
             ]);
         window.eval(read('.tmp/js/tasks/task.service.js'));
+        window.eval(read('.tmp/js/shared/form-validation.directive.js'));
         window.eval(read('.tmp/js/tasks/task-form.component.js'));
         const injector = angular.bootstrap(window.document.body, ['actinver_todolist']);
         const scope = injector.get('$rootScope');
@@ -726,6 +731,7 @@ test('Create and edit modals save, cancel copies, handle failures and refresh th
         ]) {
             window.eval(read('.tmp/js/tasks/' + file));
         }
+        window.eval(read('.tmp/js/shared/form-validation.directive.js'));
         window.eval(read('.tmp/js/shared/modal-dialog-focus.directive.js'));
         const injector = angular.bootstrap(window.document.body, ['actinver_todolist']);
         const scope = injector.get('$rootScope');

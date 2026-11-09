@@ -1,6 +1,6 @@
 {
   "printWidth": 100,
-  "tabWidth": 4,
+  "tabWidth": 2,
   "useTabs": false,
   "singleQuote": true,
   "semi": true,
@@ -14,12 +14,6 @@
       "files": "*.html",
       "options": {
         "parser": "html"
-      }
-    },
-    {
-      "files": ["*.json", "*.md", "*.yml", "*.yaml"],
-      "options": {
-        "tabWidth": 2
       }
     }
   ]
