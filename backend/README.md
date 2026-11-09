@@ -4,6 +4,18 @@ Requiere Python 3.11 o posterior; se recomienda Python 3.13 estable.
 Desde la raíz del repositorio:
 
 ```sh
+./backend/start.sh
+```
+
+El script crea `.venv` si hace falta, instala las dependencias al primer inicio
+o cuando cambia `requirements.txt` y levanta el servidor con recarga automática.
+También funciona desde `backend` con `./start.sh`. Puedes cambiar la dirección
+y el puerto con `HOST=0.0.0.0 PORT=8000 ./backend/start.sh`, y pasar opciones
+adicionales de Uvicorn como argumentos.
+
+Para realizar los pasos manualmente:
+
+```sh
 cd backend
 python3 -m venv .venv
 source .venv/bin/activate
